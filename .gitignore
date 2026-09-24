@@ -41,6 +41,9 @@ Thumbs.db
 .env.production.local
 .env.local
 
+# laporan / dokumentasi tugas (lokal saja, tidak di-push)
+/docs/
+
 # temp / qa
 docs/qa/
 docs/_docx_build/
