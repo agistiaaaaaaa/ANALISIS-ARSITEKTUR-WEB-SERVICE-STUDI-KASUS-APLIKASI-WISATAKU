@@ -1,0 +1,59 @@
+<mxfile host="app.diagrams.net" agent="WisataKu" version="22.1.0" type="device">
+  <diagram id="wisataku-arsitektur" name="Arsitektur WisataKu">
+    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- Mobile App -->
+        <mxCell id="mobile" value="Mobile App&#xa;WisataKu" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;fontSize=14;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="300" y="40" width="200" height="70" as="geometry" />
+        </mxCell>
+
+        <!-- Arrow Mobile -> NestJS -->
+        <mxCell id="edge-mobile" value="HTTP / REST API" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=12;fontStyle=1;strokeWidth=2;endArrow=block;endFill=1;" edge="1" parent="1" source="mobile" target="backend">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- NestJS Backend container -->
+        <mxCell id="backend" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;verticalAlign=top;container=1;collapsible=0;" vertex="1" parent="1">
+          <mxGeometry x="220" y="180" width="360" height="320" as="geometry" />
+        </mxCell>
+
+        <mxCell id="backend-title" value="NestJS Backend&#xa;WisataKu&#xa;Monolitik Modular" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1;fontSize=14;" vertex="1" parent="backend">
+          <mxGeometry x="20" y="10" width="320" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- Modules box -->
+        <mxCell id="modules" value="Auth&#xa;User&#xa;Destinasi&#xa;Booking&#xa;Review&#xa;Admin" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=13;align=center;verticalAlign=middle;fontStyle=0;" vertex="1" parent="backend">
+          <mxGeometry x="80" y="90" width="200" height="200" as="geometry" />
+        </mxCell>
+
+        <!-- Arrow NestJS -> Database -->
+        <mxCell id="edge-db" value="Data Access" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=12;fontStyle=1;strokeWidth=2;endArrow=block;endFill=1;" edge="1" parent="1" source="backend" target="database">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Database -->
+        <mxCell id="database" value="Database" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=1;fontSize=14;align=center;" vertex="1" parent="1">
+          <mxGeometry x="320" y="560" width="160" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- Web Admin -->
+        <mxCell id="webadmin" value="Web Admin&#xa;WisataKu" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=14;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="560" y="280" width="180" height="70" as="geometry" />
+        </mxCell>
+
+        <!-- Arrow Web Admin -> NestJS -->
+        <mxCell id="edge-web" value="HTTP / REST API" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=12;fontStyle=1;strokeWidth=2;endArrow=block;endFill=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.35;entryDx=0;entryDy=0;" edge="1" parent="1" source="webadmin" target="backend">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Legend / note -->
+        <mxCell id="note" value="Client (Mobile &amp; Web Admin) mengakses NestJS melalui REST API.&#xa;Modul berada dalam satu aplikasi monolitik modular." style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=11;fontColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="80" y="680" width="520" height="40" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

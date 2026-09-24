@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>Tugas 1 Analisis Arsitektur Web Service WisataKu</title>
+  <style>
+    @page { size: A4; margin: 20mm 22mm; }
+    body { font-family: "Times New Roman", Times, serif; font-size: 12pt; line-height: 1.5; color: #000; }
+    h2 { font-size: 14pt; border-bottom: 1px solid #000; padding-bottom: 4pt; margin-top: 20pt; page-break-after: avoid; }
+    h3 { font-size: 12pt; margin-top: 12pt; page-break-after: avoid; }
+    p { text-align: justify; margin: 0 0 8pt; }
+    ol { margin: 0 0 10pt; padding-left: 20pt; }
+    li { margin-bottom: 3pt; text-align: justify; }
+    table.data { width: 100%; border-collapse: collapse; margin: 6pt 0 12pt; font-size: 10.5pt; page-break-inside: avoid; }
+    table.data th, table.data td { border: 1px solid #000; padding: 6pt 7pt; vertical-align: top; text-align: left; }
+    table.data th { background: #f2f2f2; font-weight: 700; }
+    .table-title { font-weight: 700; margin: 8pt 0 4pt; text-align: center; font-size: 11pt; }
+    pre { background: #f7f7f7; border: 1px solid #ccc; padding: 8pt 10pt; font-family: Consolas, monospace; font-size: 10pt; }
+    .figure { text-align: center; margin: 12pt 0; page-break-inside: avoid; }
+    .figure img { max-width: 100%; }
+    .figure.screenshot img { max-height: 90mm; width: auto; }
+    .caption { font-size: 11pt; font-style: italic; margin-top: 4pt; }
+    .footer-note { margin-top: 16pt; padding-top: 8pt; border-top: 1px solid #999; font-size: 10pt; }
+    .cover { min-height: 257mm; display: flex; flex-direction: column; justify-content: space-between; align-items: center; text-align: center; page-break-after: always; break-after: page; }
+    .cover-top { margin-top: 8mm; width: 100%; }
+    .cover-top p { text-align: center; margin: 0; font-weight: 700; text-transform: uppercase; line-height: 1.35; font-size: 16pt; }
+    .cover-mid { width: 100%; display: flex; flex-direction: column; align-items: center; }
+    .cover-logo { width: 55mm; height: auto; margin: 8mm 0 10mm; }
+    .cover-author { font-size: 14pt; line-height: 1.45; }
+    .cover-author .label { font-weight: 400; margin: 0 0 4pt; text-align: center; }
+    .cover-author .name, .cover-author .nim { font-weight: 700; margin: 0; text-align: center; }
+    .cover-bottom { width: 100%; margin-bottom: 4mm; }
+    .cover-bottom p { text-align: center; margin: 0; font-weight: 700; text-transform: uppercase; font-size: 13pt; line-height: 1.4; }
+    .cover-bottom .year { margin-top: 4pt; text-transform: none; }
+  </style>
+</head>
+<body>
+  <section class="cover">
+    <div class="cover-top">
+      <p>LAPORAN PRAKTIKUM</p>
+      <p>TUGAS 1</p>
+      <p>ANALISIS ARSITEKTUR WEB SERVICE</p>
+      <p>STUDI KASUS APLIKASI WISATAKU</p>
+    </div>
+    <div class="cover-mid">
+      <img class="cover-logo" src="assets/logo-stmik-lombok.png" alt="Logo STMIK Lombok" />
+      <div class="cover-author">
+        <p class="label">Disusun oleh:</p>
+        <p class="name">Baiq Agestia Cahya Ilami</p>
+        <p class="nim">NIM: TI21240005</p>
+      </div>
+    </div>
+    <div class="cover-bottom">
+      <p>PROGRAM STUDI TEKNIK INFORMATIKA</p>
+      <p>SEKOLAH TINGGI MANAJEMEN INFORMATIKA DAN KOMPUTER</p>
+      <p>STMIK LOMBOK</p>
+      <p>PRAYA</p>
+      <p class="year">2026</p>
+    </div>
+  </section>
+
+  <h2>BAB 1 PENDAHULUAN</h2>
+  <h3>1.1 Latar Belakang</h3>
+  <p>Perkembangan aplikasi berbasis layanan menuntut adanya backend yang mampu menyediakan data secara terpusat dan dapat diakses oleh lebih dari satu jenis klien. WisataKu merupakan aplikasi yang dirancang untuk menyediakan informasi serta pengelolaan destinasi wisata. Agar layanan tersebut dapat digunakan melalui aplikasi mobile maupun web admin, diperlukan web service sebagai penghubung antara antarmuka pengguna dan logika bisnis di sisi server.</p>
+  <p>Pada praktikum ini, web service dibangun menggunakan framework NestJS. Backend tersebut berperan menerima permintaan dari klien, memproses logika aplikasi, dan mengembalikan respons melalui REST API. Pendekatan ini memungkinkan aplikasi mobile dan web admin menggunakan layanan yang sama tanpa bergantung pada detail implementasi internal backend.</p>
+  <h3>1.2 Tujuan</h3>
+  <p>Penulisan laporan ini bertujuan untuk:</p>
+  <ol>
+    <li>menjelaskan konsep arsitektur monolitik modular pada backend NestJS;</li>
+    <li>menganalisis alasan pemilihan arsitektur monolitik modular pada tahap awal pengembangan WisataKu;</li>
+    <li>menjelaskan hubungan antara klien dan backend melalui REST API; serta</li>
+    <li>menyusun rancangan arsitektur web service yang sesuai dengan ruang lingkup praktikum.</li>
+  </ol>
+  <h3>1.3 Ruang Lingkup</h3>
+  <p>Ruang lingkup praktikum dibatasi pada hal-hal berikut.</p>
+  <div class="table-title">Tabel 1. Ruang Lingkup Praktikum</div>
+  <table class="data"><thead><tr><th>No</th><th>Cakupan</th><th>Keterangan</th></tr></thead><tbody>
+    <tr><td>1</td><td>Project backend</td><td>wisataku-api berbasis NestJS</td></tr>
+    <tr><td>2</td><td>Endpoint yang diuji</td><td>GET / dan GET /destinasi</td></tr>
+    <tr><td>3</td><td>Pola arsitektur</td><td>Monolitik modular</td></tr>
+    <tr><td>4</td><td>Di luar cakupan</td><td>Database, autentikasi, Prisma, JWT, Docker, dan microservices</td></tr>
+  </tbody></table>
+
+  <h2>BAB 2 IMPLEMENTASI PRAKTIKUM</h2>
+  <h3>2.1 Identitas Project</h3>
+  <p>Ringkasan project yang digunakan dalam praktikum disajikan pada Tabel 2.</p>
+  <div class="table-title">Tabel 2. Identitas Project WisataKu</div>
+  <table class="data"><thead><tr><th>Aspek</th><th>Keterangan</th></tr></thead><tbody>
+    <tr><td>Nama aplikasi</td><td>WisataKu</td></tr>
+    <tr><td>Nama project</td><td>wisataku-api</td></tr>
+    <tr><td>Framework</td><td>NestJS</td></tr>
+    <tr><td>Arsitektur</td><td>Monolitik modular</td></tr>
+    <tr><td>Gaya API</td><td>REST</td></tr>
+    <tr><td>Perintah menjalankan server</td><td>npm run start:dev</td></tr>
+    <tr><td>Alamat pengujian</td><td>http://localhost:3000</td></tr>
+  </tbody></table>
+  <p>Project disusun sebagai satu aplikasi NestJS. Fitur dipisahkan ke dalam module, tetapi tetap dijalankan dalam satu proses aplikasi.</p>
+  <h3>2.2 Implementasi Endpoint</h3>
+  <p>Hasil implementasi endpoint pada praktikum ini disajikan pada Tabel 3.</p>
+  <div class="table-title">Tabel 3. Endpoint yang Telah Diimplementasikan</div>
+  <table class="data"><thead><tr><th>No</th><th>Endpoint</th><th>Method</th><th>Komponen terkait</th><th>Respons</th></tr></thead><tbody>
+    <tr><td>1</td><td>/</td><td>GET</td><td>AppController, AppService</td><td>Hello World!</td></tr>
+    <tr><td>2</td><td>/destinasi</td><td>GET</td><td>DestinasiModule, DestinasiController</td><td>Daftar destinasi wisata akan tampil di sini</td></tr>
+  </tbody></table>
+  <p>DestinasiModule telah didaftarkan pada AppModule sehingga endpoint /destinasi dapat diakses. Pada tahap ini, respons masih berupa teks sederhana sesuai materi praktikum. Database dan logika bisnis lanjutan belum diimplementasikan.</p>
+
+  <h2>BAB 3 ANALISIS ARSITEKTUR</h2>
+  <h3>3.1 Arsitektur Monolitik Modular</h3>
+  <p>Arsitektur monolitik modular menempatkan seluruh backend dalam satu aplikasi. Unit deployment-nya tunggal, namun struktur kode tetap dibagi berdasarkan modul agar lebih teratur dan mudah dikembangkan.</p>
+  <p>NestJS mendukung pendekatan tersebut karena setiap domain dapat memiliki module, controller, dan service tersendiri. Pada WisataKu, penerapan pola ini terlihat dari penggunaan satu project wisataku-api, satu titik masuk aplikasi pada main.ts, serta adanya DestinasiModule sebagai contoh pembagian modul. Komunikasi antar bagian dilakukan melalui import module dan dependency injection, bukan melalui jaringan antar service.</p>
+  <h3>3.2 Alasan Memilih Monolitik Modular</h3>
+  <p>Pertanyaan yang dianalisis pada bagian ini adalah: mengapa arsitektur monolitik modular dipilih sebagai tahap awal pengembangan WisataKu, bukan langsung microservices?</p>
+  <p>Jawaban atas pertanyaan tersebut dirangkum pada Tabel 4.</p>
+  <div class="table-title">Tabel 4. Alasan Pemilihan Arsitektur Monolitik Modular</div>
+  <table class="data"><thead><tr><th>Aspek</th><th>Penjelasan</th></tr></thead><tbody>
+    <tr><td>Tahap pengembangan</td><td>Project masih berada pada tahap awal sehingga membutuhkan fondasi yang sederhana dan mudah diuji.</td></tr>
+    <tr><td>Pengembangan</td><td>Mahasiswa cukup mengelola satu aplikasi NestJS dan satu alur request-response.</td></tr>
+    <tr><td>Deployment</td><td>Cukup menjalankan satu service, misalnya dengan npm run start:dev.</td></tr>
+    <tr><td>Debugging</td><td>Log dan alur pemanggilan fungsi berada dalam satu proses sehingga lebih mudah dilacak.</td></tr>
+    <tr><td>Komunikasi antar modul</td><td>Dilakukan secara lokal melalui import dan dependency injection.</td></tr>
+    <tr><td>Kompleksitas operasional</td><td>Belum memerlukan service discovery, orkestrasi container, atau monitoring terdistribusi.</td></tr>
+    <tr><td>Skala fitur saat ini</td><td>Fitur masih terbatas pada GET / dan GET /destinasi.</td></tr>
+    <tr><td>Peluang pengembangan</td><td>Modul yang sudah terpisah secara logis dapat diekstraksi menjadi service mandiri di masa depan.</td></tr>
+  </tbody></table>
+  <p>Microservices tetap memiliki manfaat, terutama pada sistem berskala besar yang membutuhkan skalabilitas per layanan. Namun, manfaat tersebut disertai kompleksitas infrastruktur yang belum sebanding dengan kebutuhan praktikum saat ini. Oleh karena itu, monolitik modular digunakan sebagai langkah awal, bukan sebagai penolakan terhadap microservices.</p>
+  <h3>3.3 Perbandingan Monolitik Modular dan Microservices</h3>
+  <p>Perbandingan kedua pendekatan disajikan pada Tabel 5.</p>
+  <div class="table-title">Tabel 5. Perbandingan Monolitik Modular dan Microservices</div>
+  <table class="data"><thead><tr><th>Aspek</th><th>Monolitik Modular</th><th>Microservices</th></tr></thead><tbody>
+    <tr><td>Struktur aplikasi</td><td>Satu aplikasi dengan banyak module</td><td>Banyak service mandiri</td></tr>
+    <tr><td>Deployment</td><td>Satu unit deploy</td><td>Banyak unit deploy</td></tr>
+    <tr><td>Komunikasi</td><td>Lokal melalui import atau DI</td><td>Melalui jaringan, misalnya API atau message broker</td></tr>
+    <tr><td>Debugging</td><td>Lebih sederhana</td><td>Lebih kompleks karena tersebar</td></tr>
+    <tr><td>Kompleksitas operasional</td><td>Lebih rendah di awal</td><td>Lebih tinggi sejak awal</td></tr>
+    <tr><td>Skalabilitas</td><td>Pada aplikasi secara keseluruhan</td><td>Dapat dilakukan per service</td></tr>
+    <tr><td>Pengelolaan infrastruktur</td><td>Lebih ringan</td><td>Lebih besar</td></tr>
+  </tbody></table>
+  <p>Kedua pendekatan dapat digunakan sesuai kebutuhan. Pada tahap awal WisataKu, monolitik modular lebih sesuai karena ruang lingkup sistem masih terbatas.</p>
+
+  <h2>BAB 4 ARSITEKTUR WISATAKU</h2>
+  <h3>4.1 Klien dan Backend</h3>
+  <p>WisataKu dirancang untuk dilayani oleh satu backend NestJS yang diakses oleh dua jenis klien. Peran masing-masing komponen dijelaskan pada Tabel 6.</p>
+  <div class="table-title">Tabel 6. Peran Klien dan Backend</div>
+  <table class="data"><thead><tr><th>Komponen</th><th>Jenis</th><th>Peran</th></tr></thead><tbody>
+    <tr><td>Mobile App WisataKu</td><td>Klien</td><td>Digunakan pengguna umum untuk mengakses destinasi dan fitur terkait</td></tr>
+    <tr><td>Web Admin WisataKu</td><td>Klien</td><td>Digunakan pengelola untuk administrasi data</td></tr>
+    <tr><td>NestJS Backend</td><td>Server</td><td>Memproses permintaan, menjalankan logika aplikasi, dan menyediakan REST API</td></tr>
+    <tr><td>Database</td><td>Penyimpanan data</td><td>Menyimpan data aplikasi pada tahap pengembangan berikutnya</td></tr>
+  </tbody></table>
+  <h3>4.2 Alur Komunikasi</h3>
+  <p>Alur komunikasi antar komponen disajikan pada Tabel 7.</p>
+  <div class="table-title">Tabel 7. Alur Komunikasi Arsitektur WisataKu</div>
+  <table class="data"><thead><tr><th>No</th><th>Dari</th><th>Ke</th><th>Protokol / jalur</th></tr></thead><tbody>
+    <tr><td>1</td><td>Mobile App</td><td>NestJS Backend</td><td>HTTP / REST API</td></tr>
+    <tr><td>2</td><td>Web Admin</td><td>NestJS Backend</td><td>HTTP / REST API</td></tr>
+    <tr><td>3</td><td>NestJS Backend</td><td>Database</td><td>Data access</td></tr>
+  </tbody></table>
+  <p>Backend NestJS menjadi pusat layanan. Request dari klien diproses di backend, kemudian respons dikembalikan melalui REST API. Pada praktikum saat ini, akses database belum diimplementasikan dan baru digambarkan secara arsitektural.</p>
+  <h3>4.3 Modul Backend</h3>
+  <p>Pembagian modul backend disusun sebagai rancangan awal. Status tiap modul dijelaskan pada Tabel 8.</p>
+  <div class="table-title">Tabel 8. Rancangan Modul Backend dan Status Implementasi</div>
+  <table class="data"><thead><tr><th>Modul</th><th>Peran</th><th>Status</th></tr></thead><tbody>
+    <tr><td>Auth</td><td>Autentikasi dan otorisasi</td><td>Rancangan</td></tr>
+    <tr><td>User</td><td>Pengelolaan data pengguna</td><td>Rancangan</td></tr>
+    <tr><td>Destinasi</td><td>Pengelolaan dan penyajian destinasi wisata</td><td>Telah diimplementasikan</td></tr>
+    <tr><td>Booking</td><td>Pemesanan destinasi</td><td>Rancangan</td></tr>
+    <tr><td>Review</td><td>Ulasan pengguna</td><td>Rancangan</td></tr>
+    <tr><td>Admin</td><td>Fungsi pengelolaan panel admin</td><td>Rancangan</td></tr>
+  </tbody></table>
+  <p>Seluruh modul dirancang berada dalam satu aplikasi NestJS. Pada praktikum ini, modul yang telah dibuat adalah Destinasi beserta controller-nya.</p>
+  <h3>4.4 Database</h3>
+  <p>Database digambarkan sebagai komponen penyimpanan data yang akan diakses backend. Jenis database tertentu belum ditentukan dan belum diimplementasikan pada tahap praktikum ini.</p>
+
+  <h2>BAB 5 DIAGRAM ARSITEKTUR</h2>
+  <p>Diagram arsitektur WisataKu disusun berdasarkan berkas docs/wisataku-arsitektur.drawio dan ditampilkan pada Gambar 1.</p>
+  <div class="figure"><img src="assets/wisataku-arsitektur.svg" alt="Diagram arsitektur" /><div class="caption">Gambar 1. Arsitektur Web Service WisataKu</div></div>
+  <p>Diagram tersebut menunjukkan bahwa Mobile App dan Web Admin terhubung ke NestJS Backend melalui REST API. Di dalam backend terdapat rancangan modul Auth, User, Destinasi, Booking, Review, dan Admin. Backend kemudian terhubung ke database melalui jalur data access.</p>
+
+  <h2>BAB 6 HASIL DAN VERIFIKASI</h2>
+  <p>Pengujian dilakukan dengan menjalankan aplikasi menggunakan perintah npm run start:dev pada alamat http://localhost:3000. Hasil pengujian disajikan pada Tabel 9.</p>
+  <div class="table-title">Tabel 9. Hasil Verifikasi Endpoint</div>
+  <table class="data"><thead><tr><th>No</th><th>Endpoint</th><th>Method</th><th>Hasil pengujian</th><th>Status</th></tr></thead><tbody>
+    <tr><td>1</td><td>/</td><td>GET</td><td>Hello World!</td><td>Berhasil</td></tr>
+    <tr><td>2</td><td>/destinasi</td><td>GET</td><td>Daftar destinasi wisata akan tampil di sini</td><td>Berhasil</td></tr>
+  </tbody></table>
+  <h3>Bukti Pengujian</h3>
+  <p>Bukti pengujian melalui browser ditampilkan pada Gambar 2 dan Gambar 3.</p>
+  <div class="figure screenshot"><img src="assets/screenshots/get-root.png" alt="GET /" /><div class="caption">Gambar 2. Hasil pengujian GET / yang menampilkan Hello World!</div></div>
+  <div class="figure screenshot"><img src="assets/screenshots/get-destinasi.png" alt="GET /destinasi" /><div class="caption">Gambar 3. Hasil pengujian GET /destinasi yang menampilkan teks Daftar destinasi wisata akan tampil di sini</div></div>
+
+  <h2>BAB 7 KESIMPULAN</h2>
+  <p>Berdasarkan hasil praktikum dan analisis arsitektur, dapat disimpulkan bahwa WisataKu menggunakan pendekatan monolitik modular sebagai tahap awal pengembangan backend. Pendekatan tersebut memudahkan pengerjaan, pengujian, dan pengelolaan sistem ketika fitur masih terbatas.</p>
+  <p>Aplikasi mobile dan web admin dapat menggunakan backend NestJS yang sama melalui REST API. Apabila kebutuhan sistem meningkat, arsitektur masih dapat dikembangkan secara bertahap, termasuk mempertimbangkan microservices jika skala dan kompleksitas aplikasi sudah memerlukannya. Pada tahap ini, sistem masih merupakan fondasi praktikum dan belum diklaim sebagai sistem produksi.</p>
+  <div class="footer-note">
+    <strong>Referensi:</strong>
+    (1) docs/tugas-1-analisis-arsitektur.md;
+    (2) docs/wisataku-arsitektur.drawio;
+    (3) implementasi project wisataku-api pada endpoint GET / dan GET /destinasi.
+  </div>
+</body>
+</html>
